@@ -1,0 +1,290 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+  <diagram name="C4 Level 3 — Keycloak Components" id="keycloak-components">
+    <mxGraphModel dx="2558" dy="988" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=14;" value="&lt;b&gt;C4 — Level 3 (Component): Keycloak IdP Broker&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:11px;color:#666&quot;&gt;Container: Central Keycloak (quay.io/keycloak:21.1)&lt;br/&gt;Realm: bionicpro  |  Technology: Java / Quarkus  |  Protocols: OIDC, SAML 2.0, LDAP&lt;/font&gt;" vertex="1">
+          <mxGeometry height="56" width="740" x="220" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-bff" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#438DD5;fontColor=#ffffff;strokeColor=#3C7FC0;fontSize=11;verticalAlign=top;" value="&lt;b&gt;BFF Gateway&lt;/b&gt;&lt;br/&gt;[Container: FastAPI / Node.js]&lt;br/&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Token Proxy: получает auth code,&lt;br/&gt;обменивает на токены,&lt;br/&gt;хранит IdP-токены server-side&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="200" x="-130" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-backend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#438DD5;fontColor=#ffffff;strokeColor=#3C7FC0;fontSize=11;verticalAlign=top;" value="&lt;b&gt;Backend API&lt;/b&gt;&lt;br/&gt;[Container: Reports API]&lt;br/&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Валидирует internal JWT,&lt;br/&gt;бизнес-логика BionicPRO&lt;/font&gt;" vertex="1">
+          <mxGeometry height="90" width="200" x="1760" y="413" as="geometry" />
+        </mxCell>
+        <mxCell id="kc-boundary" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF3FF;strokeColor=#3C7FC0;strokeWidth=2;dashed=1;dashPattern=8 4;verticalAlign=top;fontSize=12;fontStyle=1;" value="" vertex="1">
+          <mxGeometry height="720" width="1390" x="270" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="kc-boundary-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;" value="&lt;font style=&quot;font-size:13px;color:#1F4E79&quot;&gt;⬡ Keycloak  —  Central IdP Broker&lt;br/&gt;&lt;font style=&quot;font-size:10px;color:#666&quot;&gt;Container  ·  quay.io/keycloak:21.1  ·  Realm «bionicpro»&lt;/font&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="36" width="420" x="350" y="96" as="geometry" />
+        </mxCell>
+        <mxCell id="comp-oidc" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#85BBF0;fontColor=#1F4E79;strokeColor=#3C7FC0;fontSize=11;verticalAlign=top;" value="&lt;b&gt;OIDC Endpoint&lt;/b&gt;&lt;br/&gt;[Component]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;/realms/bionicpro/protocol/&lt;br/&gt;openid-connect/*&lt;br/&gt;Authorization Code + PKCE,&lt;br/&gt;Token, UserInfo, Logout,&lt;br/&gt;JWKS (.well-known)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="120" width="180" x="300" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="comp-saml" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#85BBF0;fontColor=#1F4E79;strokeColor=#3C7FC0;fontSize=11;verticalAlign=top;" value="&lt;b&gt;SAML 2.0 Endpoint&lt;/b&gt;&lt;br/&gt;[Component]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;/realms/bionicpro/protocol/&lt;br/&gt;saml&lt;br/&gt;SP-initiated SSO,&lt;br/&gt;Assertion Consumer Service,&lt;br/&gt;SLO&lt;/font&gt;" vertex="1">
+          <mxGeometry height="120" width="180" x="510" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="comp-admin" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#85BBF0;fontColor=#1F4E79;strokeColor=#3C7FC0;fontSize=11;verticalAlign=top;" value="&lt;b&gt;Admin REST API&lt;/b&gt;&lt;br/&gt;[Component]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;/admin/realms/bionicpro/*&lt;br/&gt;Управление realm,&lt;br/&gt;clients, users, roles,&lt;br/&gt;identity providers&lt;/font&gt;" vertex="1">
+          <mxGeometry height="120" width="180" x="720" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="comp-auth-flow" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F4E79;fontColor=#ffffff;strokeColor=#1A3A5C;fontSize=11;verticalAlign=top;" value="&lt;b&gt;Authentication&lt;br/&gt;Flow Engine&lt;/b&gt;&lt;br/&gt;[Component: SPI]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;Browser Flow,&lt;br/&gt;First Broker Login Flow,&lt;br/&gt;Direct Grant Flow.&lt;br/&gt;Шаги: Cookie → IdP Redirect&lt;br/&gt;→ Review Profile → Create User&lt;/font&gt;" vertex="1">
+          <mxGeometry height="140" width="180" x="300" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="comp-broker" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F4E79;fontColor=#ffffff;strokeColor=#1A3A5C;fontSize=11;verticalAlign=top;" value="&lt;b&gt;Identity Broker&lt;/b&gt;&lt;br/&gt;[Component: SPI]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;Маршрутизация к внешним IdP.&lt;br/&gt;Поддержка kc_idp_hint.&lt;br/&gt;Выбор IdP по стране.&lt;br/&gt;Маппинг атрибутов&lt;br/&gt;(email, roles).&lt;br/&gt;Account Linking.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="140" width="180" x="650" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="comp-token" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F4E79;fontColor=#ffffff;strokeColor=#1A3A5C;fontSize=11;verticalAlign=top;" value="&lt;b&gt;Token Service&lt;/b&gt;&lt;br/&gt;[Component: SPI]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;Генерация JWT (RS256).&lt;br/&gt;Access / Refresh / ID Token.&lt;br/&gt;Token Exchange (RFC 8693).&lt;br/&gt;PKCE code_challenge&lt;br/&gt;validation (S256).&lt;br/&gt;Ротация ключей (JWKS).&lt;/font&gt;" vertex="1">
+          <mxGeometry height="140" width="180" x="1090" y="388" as="geometry" />
+        </mxCell>
+        <mxCell id="comp-rbac" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2E75B6;fontColor=#ffffff;strokeColor=#1F4E79;fontSize=11;verticalAlign=top;" value="&lt;b&gt;Authorization /&lt;br/&gt;RBAC Engine&lt;/b&gt;&lt;br/&gt;[Component: SPI]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;Realm Roles: admin,&lt;br/&gt;protheticuser, user.&lt;br/&gt;Client Scopes.&lt;br/&gt;Role Mappers.&lt;br/&gt;Consent Management.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="130" width="180" x="300" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="comp-userfed" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2E75B6;fontColor=#ffffff;strokeColor=#1F4E79;fontSize=11;verticalAlign=top;" value="&lt;b&gt;User Storage /&lt;br/&gt;Federation SPI&lt;/b&gt;&lt;br/&gt;[Component: SPI]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;LDAP/AD User Federation.&lt;br/&gt;Import mode: NO_IMPORT&lt;br/&gt;(данные НЕ копируются).&lt;br/&gt;Read-only attributes.&lt;br/&gt;Attribute Mappers.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="130" width="180" x="510" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="comp-session" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2E75B6;fontColor=#ffffff;strokeColor=#1F4E79;fontSize=11;verticalAlign=top;" value="&lt;b&gt;Session &amp;&amp;&lt;br/&gt;Event Store&lt;/b&gt;&lt;br/&gt;[Component]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;User Sessions (SSO).&lt;br/&gt;Login / Admin Events.&lt;br/&gt;Infinispan Cache&lt;br/&gt;(hot-rod, distributed).&lt;br/&gt;Audit logging.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="130" width="180" x="760" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="comp-theme" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BDD7EE;fontColor=#1F4E79;strokeColor=#9CC3E5;fontSize=11;verticalAlign=top;" value="&lt;b&gt;Login Theme / UI&lt;/b&gt;&lt;br/&gt;[Component: SPI]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;Страницы login, OTP,&lt;br/&gt;выбора IdP по стране,&lt;br/&gt;consent, error.&lt;br/&gt;FreeMarker templates.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="110" width="180" x="1450" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="comp-mfa" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BDD7EE;fontColor=#1F4E79;strokeColor=#9CC3E5;fontSize=11;verticalAlign=top;" value="&lt;b&gt;MFA Provider&lt;/b&gt;&lt;br/&gt;[Component: SPI]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;TOTP (Google Auth).&lt;br/&gt;WebAuthn / FIDO2.&lt;br/&gt;Required Action:&lt;br/&gt;Configure OTP.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="110" width="180" x="1450" y="278" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-ru" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A9D18E;fontColor=#1F3D1F;strokeColor=#548235;fontSize=11;verticalAlign=top;" value="&lt;b&gt;RU IdP&lt;/b&gt;&lt;br/&gt;[External: LDAP/AD]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;Active Directory,&lt;br/&gt;Moscow DC.&lt;br/&gt;ФЗ-152: PII local.&lt;br/&gt;Protocol: LDAP / SAML&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="160" x="310" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-eu" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A9D18E;fontColor=#1F3D1F;strokeColor=#548235;fontSize=11;verticalAlign=top;" value="&lt;b&gt;EU IdP&lt;/b&gt;&lt;br/&gt;[External: Azure AD]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;OIDC, Frankfurt DC.&lt;br/&gt;GDPR: PII local.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="160" x="520" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-apac" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A9D18E;fontColor=#1F3D1F;strokeColor=#548235;fontSize=11;verticalAlign=top;" value="&lt;b&gt;APAC IdP&lt;/b&gt;&lt;br/&gt;[External: Okta]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;SAML 2.0, Singapore DC.&lt;br/&gt;PDPA: PII local.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="160" x="730" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-new" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E2EFDA;fontColor=#1F3D1F;strokeColor=#A9D18E;fontSize=11;verticalAlign=top;dashed=1;dashPattern=8 4;" value="&lt;b&gt;New Region IdP&lt;/b&gt;&lt;br/&gt;[External: ? ]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;Plug-and-play.&lt;br/&gt;SAML / OIDC.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="160" x="940" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-kcdb" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#DAE8FC;fontColor=#1F4E79;strokeColor=#6C8EBF;fontSize=11;verticalAlign=top;" value="&lt;b&gt;Keycloak DB&lt;/b&gt;&lt;br/&gt;[PostgreSQL 14]&lt;br/&gt;&lt;font style=&quot;font-size:9px&quot;&gt;Realm config, clients,&lt;br/&gt;roles, mappers,&lt;br/&gt;session metadata.&lt;br/&gt;⚠ Без PII из IdP.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="110" width="140" x="1180" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="ext-bff" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;html=1;strokeWidth=2;strokeColor=#3C7FC0;endArrow=classic;exitX=1;exitY=0.3;entryX=0;entryY=0.3;" target="comp-oidc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1-l" connectable="0" parent="e1" style="edgeLabel;html=1;align=center;verticalAlign=middle;" value="&lt;font style=&quot;font-size:9px&quot;&gt;1. OIDC Auth Code + PKCE&lt;br/&gt;/authorize, /token, /certs&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.1" as="geometry">
+            <mxPoint y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e1b" edge="1" parent="1" source="comp-oidc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;html=1;strokeWidth=1;strokeColor=#999;endArrow=classic;dashed=1;exitX=0;exitY=0.7;entryX=1;entryY=0.7;" target="ext-bff">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1b-l" connectable="0" parent="e1b" style="edgeLabel;html=1;align=center;verticalAlign=middle;" value="&lt;font style=&quot;font-size:9px;color:#C00&quot;&gt;JWT (access, refresh, id)&lt;br/&gt;⚠ Остаются на BFF, НЕ на frontend&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.1" as="geometry">
+            <mxPoint y="14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="ext-backend" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;html=1;strokeWidth=1;strokeColor=#999;endArrow=classic;dashed=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="comp-token">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1610" y="458" />
+              <mxPoint x="1610" y="458" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2-l" connectable="0" parent="e2" style="edgeLabel;html=1;align=center;verticalAlign=middle;" value="&lt;font style=&quot;font-size:9px&quot;&gt;Получает JWKS&lt;br/&gt;для валидации&lt;br/&gt;Keycloak-issued JWT&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.2" as="geometry">
+            <mxPoint x="136" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i1" edge="1" parent="1" source="comp-oidc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#1F4E79;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="comp-auth-flow">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i1-l" connectable="0" parent="i1" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;Запускает&lt;br/&gt;Browser Flow&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.15" as="geometry">
+            <mxPoint x="50" y="3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i1s" edge="1" parent="1" source="comp-saml" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#1F4E79;endArrow=classic;exitX=0.25;exitY=1;entryX=0.75;entryY=0;" target="comp-auth-flow">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i1s-l" connectable="0" parent="i1s" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;SP-initiated&lt;br/&gt;SAML flow&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.1" as="geometry">
+            <mxPoint x="16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i2" edge="1" parent="1" source="comp-auth-flow" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#1F4E79;endArrow=classic;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="comp-broker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i2-l" connectable="0" parent="i2" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;2. IdP redirect&lt;br/&gt;(kc_idp_hint)&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.15" as="geometry">
+            <mxPoint y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i3" edge="1" parent="1" source="comp-broker" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#1F4E79;endArrow=classic;exitX=1;exitY=0.8;entryX=0;entryY=0.3;" target="comp-token">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i3-l" connectable="0" parent="i3" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;5. Генерация&lt;br/&gt;Keycloak JWT&lt;br/&gt;после broker login&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.2" as="geometry">
+            <mxPoint x="29" y="-32" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i4" edge="1" parent="1" source="comp-auth-flow" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#2E75B6;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="comp-rbac">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i4-l" connectable="0" parent="i4" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;Проверка ролей,&lt;br/&gt;scopes&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.15" as="geometry">
+            <mxPoint x="-30" y="22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i5" edge="1" parent="1" source="comp-broker" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#2E75B6;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="comp-userfed">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i5-l" connectable="0" parent="i5" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;First Broker Login:&lt;br/&gt;lookup / create user&lt;br/&gt;(NO_IMPORT mode)&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.15" as="geometry">
+            <mxPoint x="30" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i6" edge="1" parent="1" source="comp-token" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#2E75B6;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="comp-session">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i6-l" connectable="0" parent="i6" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;Создаёт&lt;br/&gt;user session&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.15" as="geometry">
+            <mxPoint x="40" y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i7" edge="1" parent="1" source="comp-session" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#6C8EBF;endArrow=classic;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="ext-kcdb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i7-l" connectable="0" parent="i7" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;Persist&lt;br/&gt;sessions,&lt;br/&gt;events&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.15" as="geometry">
+            <mxPoint x="51" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i7b" edge="1" parent="1" source="comp-rbac" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1;strokeColor=#6C8EBF;endArrow=classic;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.8;exitDx=0;exitDy=0;" target="ext-kcdb">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="960" y="715" />
+              <mxPoint x="960" y="648" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i7b-l" connectable="0" parent="i7b" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;Read roles, scopes, policies&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.2" as="geometry">
+            <mxPoint x="117" y="-70" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i8" edge="1" parent="1" source="comp-auth-flow" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#9CC3E5;endArrow=classic;exitX=1;exitY=0.2;entryX=0;entryY=0.5;" target="comp-mfa">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="930" y="338" />
+              <mxPoint x="930" y="333" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i8-l" connectable="0" parent="i8" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;Conditional OTP&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.1" as="geometry">
+            <mxPoint x="421" y="-18" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i9" edge="1" parent="1" source="comp-auth-flow" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1;strokeColor=#9CC3E5;endArrow=classic;dashed=1;exitX=1;exitY=0.1;entryX=0;entryY=0.5;" target="comp-theme">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="930" y="324" />
+              <mxPoint x="930" y="205" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i9-l" connectable="0" parent="i9" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;Render login pages&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.4" as="geometry">
+            <mxPoint y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="comp-userfed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#548235;endArrow=classic;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" target="ext-ru">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1-l" connectable="0" parent="f1" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;3a. LDAP bind / search&lt;br/&gt;(User Federation)&lt;br/&gt;&lt;b&gt;PII остаётся в RU&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.2" as="geometry">
+            <mxPoint x="-139" y="40" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="comp-userfed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#548235;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="ext-eu">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2-l" connectable="0" parent="f2" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;3b. OIDC federation&lt;br/&gt;&lt;b&gt;PII остаётся в EU&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.1" as="geometry">
+            <mxPoint y="20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="comp-userfed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#548235;endArrow=classic;exitX=0.75;exitY=1;entryX=0.5;entryY=0;" target="ext-apac">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3-l" connectable="0" parent="f3" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px&quot;&gt;3c. SAML 2.0 assertion&lt;br/&gt;&lt;b&gt;PII остаётся в APAC&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.1" as="geometry">
+            <mxPoint x="111" y="40" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="comp-userfed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1;strokeColor=#999;endArrow=classic;dashed=1;dashPattern=8 4;exitX=1;exitY=0.8;entryX=0.5;entryY=0;" target="ext-new">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="640" />
+              <mxPoint x="700" y="640" />
+              <mxPoint x="700" y="750" />
+              <mxPoint x="1010" y="750" />
+              <mxPoint x="1010" y="1030" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f4-l" connectable="0" parent="f4" style="edgeLabel;html=1;" value="&lt;font style=&quot;font-size:9px;color:#999&quot;&gt;Plug &amp; Play&lt;br/&gt;(новый регион)&lt;/font&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.4" as="geometry">
+            <mxPoint y="57" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#CCC;dashed=1;" value="" vertex="1">
+          <mxGeometry height="280" width="210" x="-130" y="318" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;fontSize=11;fontColor=#333;" value="&lt;b&gt;Легенда&lt;/b&gt;" vertex="1">
+          <mxGeometry height="20" width="80" x="-120" y="326" as="geometry" />
+        </mxCell>
+        <mxCell id="leg1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#85BBF0;strokeColor=#3C7FC0;" value="" vertex="1">
+          <mxGeometry height="14" width="18" x="-120" y="354" as="geometry" />
+        </mxCell>
+        <mxCell id="leg1t" parent="1" style="text;html=1;strokeColor=none;fillColor=none;" value="&lt;font style=&quot;font-size:10px&quot;&gt;Protocol Endpoints (Layer 1)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="170" x="-94" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F4E79;strokeColor=#1A3A5C;" value="" vertex="1">
+          <mxGeometry height="14" width="18" x="-120" y="378" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2t" parent="1" style="text;html=1;strokeColor=none;fillColor=none;" value="&lt;font style=&quot;font-size:10px&quot;&gt;Core Engine (Layer 2)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="170" x="-94" y="374" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2E75B6;strokeColor=#1F4E79;" value="" vertex="1">
+          <mxGeometry height="14" width="18" x="-120" y="402" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3t" parent="1" style="text;html=1;strokeColor=none;fillColor=none;" value="&lt;font style=&quot;font-size:10px&quot;&gt;Authorization &amp; Storage (Layer 3)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="190" x="-94" y="399" as="geometry" />
+        </mxCell>
+        <mxCell id="leg4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BDD7EE;strokeColor=#9CC3E5;" value="" vertex="1">
+          <mxGeometry height="14" width="18" x="-120" y="426" as="geometry" />
+        </mxCell>
+        <mxCell id="leg4t" parent="1" style="text;html=1;strokeColor=none;fillColor=none;" value="&lt;font style=&quot;font-size:10px&quot;&gt;UI / MFA (Cross-cutting)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="170" x="-94" y="422" as="geometry" />
+        </mxCell>
+        <mxCell id="leg5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A9D18E;strokeColor=#548235;" value="" vertex="1">
+          <mxGeometry height="14" width="18" x="-120" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="leg5t" parent="1" style="text;html=1;strokeColor=none;fillColor=none;" value="&lt;font style=&quot;font-size:10px&quot;&gt;External IdP (per country)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="170" x="-94" y="446" as="geometry" />
+        </mxCell>
+        <mxCell id="leg6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#438DD5;strokeColor=#3C7FC0;" value="" vertex="1">
+          <mxGeometry height="14" width="18" x="-120" y="474" as="geometry" />
+        </mxCell>
+        <mxCell id="leg6t" parent="1" style="text;html=1;strokeColor=none;fillColor=none;" value="&lt;font style=&quot;font-size:10px&quot;&gt;BionicPRO Container (external)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="180" x="-94" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-note" parent="1" style="text;html=1;strokeColor=#C00;fillColor=#FFF0F0;rounded=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;" value="&lt;font style=&quot;font-size:9px;color:#C00&quot;&gt;⚠ PII / медицинские данные&lt;br/&gt;хранятся ТОЛЬКО в Regional IdP.&lt;br/&gt;Keycloak хранит только&lt;br/&gt;session metadata и role mappings.&lt;br/&gt;IdP-токены не попадают на frontend.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="88" width="194" x="-124" y="498" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
