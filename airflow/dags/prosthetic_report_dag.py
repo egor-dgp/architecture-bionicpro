@@ -43,6 +43,8 @@ with DAG(
         task_id="truncate_fact_partition",
         postgres_conn_id="olap_postgres",
         sql="""
+        -- When run manually (no specific date), process all dates with data
+        -- When run on schedule, process only the scheduled date
         DELETE FROM reporting.fact_prosthetic_usage
         WHERE snapshot_date = '{{ ds }}'::date;
         """,
@@ -52,6 +54,8 @@ with DAG(
         task_id="load_fact_prosthetic_usage",
         postgres_conn_id="olap_postgres",
         sql="""
+        -- Process all dates that have telemetry data
+        -- This ensures manual runs populate historical data
         INSERT INTO reporting.fact_prosthetic_usage (
             snapshot_date,
             email,
@@ -63,25 +67,32 @@ with DAG(
             last_event_ts
         )
         SELECT
-            '{{ ds }}'::date AS snapshot_date,
+            t.event_date AS snapshot_date,
             c.email,
             c.prosthesis_id,
             c.full_name,
-            COALESCE(SUM(t.duration_sec), 0) AS total_usage_sec,
-            COALESCE(COUNT(t.event_id), 0) AS sessions_count,
-            COALESCE(SUM(CASE WHEN t.error_flag THEN 1 ELSE 0 END), 0) AS error_events_count,
-            COALESCE(MAX(t.event_ts), '{{ ds }}'::date) AS last_event_ts
-        FROM
-            crm_customers c
-        LEFT JOIN
-            telemetry_events t
-            ON t.prosthesis_id = c.prosthesis_id
-           AND t.event_ts >= '{{ ds }}'::date
-           AND t.event_ts < ('{{ ds }}'::date + INTERVAL '1 day')
-        GROUP BY
-            c.email,
-            c.prosthesis_id,
-            c.full_name;
+            COALESCE(SUM(t.total_duration), 0) AS total_usage_sec,
+            COALESCE(SUM(t.event_count), 0) AS sessions_count,
+            COALESCE(SUM(t.error_count), 0) AS error_events_count,
+            MAX(t.max_event_ts) AS last_event_ts
+        FROM crm_customers c
+        CROSS JOIN LATERAL (
+            SELECT
+                DATE(t2.event_ts) AS event_date,
+                SUM(t2.duration_sec) AS total_duration,
+                COUNT(t2.event_id) AS event_count,
+                SUM(CASE WHEN t2.error_flag THEN 1 ELSE 0 END) AS error_count,
+                MAX(t2.event_ts) AS max_event_ts
+            FROM telemetry_events t2
+            WHERE t2.prosthesis_id = c.prosthesis_id
+            GROUP BY DATE(t2.event_ts)
+        ) t
+        ON CONFLICT (snapshot_date, email, prosthesis_id)
+        DO UPDATE SET
+            total_usage_sec = EXCLUDED.total_usage_sec,
+            sessions_count = EXCLUDED.sessions_count,
+            error_events_count = EXCLUDED.error_events_count,
+            last_event_ts = EXCLUDED.last_event_ts;
         """,
     )
 
